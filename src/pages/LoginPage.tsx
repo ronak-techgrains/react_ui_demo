@@ -1,6 +1,59 @@
 import React from "react";
+import { InputField } from "../component/ui/InputField";
+import { enqueueSnackbar } from "notistack";
+import { useDebounce } from "../utils/debounce";
 
 const LoginPage: React.FC = () => {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [showEmailError, setShowEmailError] = React.useState(false);
+  const [showPasswordError, setShowPasswordError] = React.useState(false);
+  const [emailError, setEmailError] = React.useState("");
+  const [passwordError, setPasswordError] = React.useState("");
+
+  const debouncedHandleLogin = useDebounce(() => handleLogin(), 500);
+
+  function handleLogin() {
+    console.log("Form submitted with:", { email, password });
+    if (!email || !password) {
+      setEmailError("Email is required.");
+      setPasswordError("Password is required.");
+      enqueueSnackbar("Both email and password are required.", {
+        variant: "error",
+      });
+      setShowEmailError(true);
+      setShowPasswordError(true);
+      return;
+    }
+
+    if (!email) {
+      setEmailError("Email is required.");
+      enqueueSnackbar("Email is required.", {
+        variant: "error",
+      });
+      setShowEmailError(true);
+      return;
+    }
+
+    if (!password) {
+      setPasswordError("Password is required.");
+      enqueueSnackbar("Password is required.", {
+        variant: "error",
+      });
+      setShowPasswordError(true);
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError("Please enter a valid email address.");
+      enqueueSnackbar("Please enter a valid email address.", {
+        variant: "error",
+      });
+      setShowEmailError(true);
+      return;
+    }
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-900 px-4">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
@@ -10,25 +63,43 @@ const LoginPage: React.FC = () => {
 
         {/* Email Input */}
         <div className="mb-4">
-          <input
+          <InputField
             type="email"
+            value={email}
             placeholder="Email address"
-            className="w-full rounded-md border border-gray-300 px-4 py-3 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            isSecureField={false}
+            showClearIcon={false}
+            hasError={showEmailError}
+            showError={showEmailError}
+            errorMessage={showEmailError ? emailError : ""}
+            onChange={(value) => {
+              setEmail(value);
+              setShowEmailError(false); // Reset error on change
+            }}
           />
         </div>
 
         {/* Password Input */}
-        <div className="mb-6">
-          <input
+        <div className="mb-4">
+          <InputField
             type="password"
+            value={password}
             placeholder="Password"
-            className="w-full rounded-md border border-gray-300 px-4 py-3 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            isSecureField={true}
+            showClearIcon={false}
+            hasError={showPasswordError}
+            onChange={(value) => {
+              setPassword(value);
+              setShowPasswordError(false); // Reset error on change
+            }}
+            showError={showPasswordError}
+            errorMessage={showPasswordError ? passwordError : undefined}
           />
         </div>
 
-        {/* Login Button */}
+        {/* Validation Logic */}
         <button
-          type="submit"
+          onClick={debouncedHandleLogin}
           className="w-full rounded-md bg-blue-500 py-3 text-white font-semibold hover:bg-blue-600 transition"
         >
           Log in

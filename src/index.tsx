@@ -9,7 +9,7 @@ import customTheme from "./style/custom_theme";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider value={customTheme}>
-      <SnackbarProvider>
+      <SnackbarProvider maxSnack={3} autoHideDuration={2000}>
         <App />
       </SnackbarProvider>
     </ThemeProvider>
