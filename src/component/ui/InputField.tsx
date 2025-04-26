@@ -54,7 +54,7 @@ export const InputField: React.FC<InputFieldProps> = ({
       />
 
       {/* Show/Hide Password Toggle */}
-      {isSecureField && isPasswordField && (
+      {inputValue && isSecureField && isPasswordField && (
         <button
           type="button"
           className={`absolute ${

@@ -11,8 +11,6 @@ const LoginPage: React.FC = () => {
   const [emailError, setEmailError] = React.useState("");
   const [passwordError, setPasswordError] = React.useState("");
 
-  const debouncedHandleLogin = useDebounce(() => handleLogin(), 500);
-
   function handleLogin() {
     console.log("Form submitted with:", { email, password });
     if (!email || !password) {
@@ -99,7 +97,7 @@ const LoginPage: React.FC = () => {
 
         {/* Validation Logic */}
         <button
-          onClick={debouncedHandleLogin}
+          onClick={useDebounce(() => handleLogin(), 500)}
           className="w-full rounded-md bg-blue-500 py-3 text-white font-semibold hover:bg-blue-600 transition"
         >
           Log in
