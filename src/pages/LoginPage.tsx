@@ -2,52 +2,46 @@ import React from "react";
 
 const LoginPage: React.FC = () => {
   return (
-    <div className="h-screen w-full bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 flex items-center justify-center">
-      <form className="bg-white p-8 rounded-lg shadow-2xl w-96">
-        <h2 className="text-2xl font-extrabold text-gray-800 mb-6 text-center">
-          Welcome Back!
+    <div className="flex min-h-screen items-center justify-center bg-gray-900 px-4">
+      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
+        <h2 className="mb-6 text-center text-3xl font-bold text-gray-800">
+          Log in
         </h2>
-        <div className="mb-6">
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Email Address
-          </label>
+
+        {/* Email Input */}
+        <div className="mb-4">
           <input
             type="email"
-            id="email"
-            className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-            placeholder="Enter your email"
+            placeholder="Email address"
+            className="w-full rounded-md border border-gray-300 px-4 py-3 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
+
+        {/* Password Input */}
         <div className="mb-6">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Password
-          </label>
           <input
             type="password"
-            id="password"
-            className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-            placeholder="Enter your password"
+            placeholder="Password"
+            className="w-full rounded-md border border-gray-300 px-4 py-3 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
+
+        {/* Login Button */}
         <button
           type="submit"
-          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-4 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+          className="w-full rounded-md bg-blue-500 py-3 text-white font-semibold hover:bg-blue-600 transition"
         >
-          Login
+          Log in
         </button>
-        <p className="mt-4 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
-          <a href="#" className="text-purple-500 hover:underline font-medium">
-            Sign up
+
+        {/* Divider */}
+        <div className="mt-6 text-center text-sm text-gray-500">
+          or,{" "}
+          <a href="#" className="font-medium text-blue-500 hover:underline">
+            sign up
           </a>
-        </p>
-      </form>
+        </div>
+      </div>
     </div>
   );
 };
