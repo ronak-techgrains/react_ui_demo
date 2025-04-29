@@ -14,6 +14,15 @@ const customTheme = {
     styles: {
       base: "inline-flex items-center justify-center font-medium rounded-md focus:outline-none transition-all",
 
+      font: {
+        default: "font-roboto",
+        bold: "font-bold",
+        semibold: "font-semibold",
+        medium: "font-medium",
+        normal: "font-normal",
+        light: "font-light",
+      },
+
       sizes: {
         sm: "text-sm px-3 py-1.5",
         md: "text-base px-4 py-2",
