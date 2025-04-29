@@ -2,6 +2,8 @@ import React from "react";
 import { InputField } from "../component/ui/InputField";
 import { enqueueSnackbar } from "notistack";
 import { useDebounce } from "../utils/debounce";
+import { getFont } from "@/utils/style";
+import { FontType } from "@/constants/common";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = React.useState("");
@@ -98,17 +100,27 @@ const LoginPage: React.FC = () => {
         {/* Validation Logic */}
         <button
           onClick={useDebounce(() => handleLogin(), 500)}
-          className="w-full rounded-md bg-blue-500 py-3 text-white font-semibold hover:bg-blue-600 transition"
+          className={`w-full rounded-md bg-blue-500 py-3 text-white hover:bg-blue-600 transition ${getFont(
+            FontType.bold
+          )}`}
         >
           Log in
         </button>
-
         {/* Divider */}
-        <div className="mt-6 text-center text-sm text-gray-500">
+        <div
+          className={`mt-6 text-center text-sm text-gray-500 ${getFont(
+            FontType.normal
+          )}`}
+        >
           or,{" "}
-          <a href="#" className="font-medium text-blue-500 hover:underline">
+          <button
+            onClick={() => console.log("Sign up clicked")}
+            className={`font-medium text-blue-500 hover:underline bg-transparent border-none cursor-pointer ${getFont(
+              FontType.bold
+            )}`}
+          >
             sign up
-          </a>
+          </button>
         </div>
       </div>
     </div>
