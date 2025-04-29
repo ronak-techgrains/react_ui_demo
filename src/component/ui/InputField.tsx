@@ -44,19 +44,19 @@ export const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
 
         {/* Show/Hide Password Toggle */}
         {isSecureField && isPasswordField && (
-          <button
+            <button
             type="button"
             className={`absolute ${
               showClearIcon ? "right-10" : "right-3"
-            } top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700`}
+            } ${ hasError ? "top-1/3" : "top-1/2" } transform -translate-y-1/2 flex items-center justify-center text-gray-500 hover:text-gray-700`}
             onClick={() => setShowPassword((prev) => !prev)}
-          >
+            >
             {showPassword ? (
               <EyeOff className="h-5 w-5" />
             ) : (
               <Eye className="h-5 w-5" />
             )}
-          </button>
+            </button>
         )}
 
         {/* Clear Icon */}

@@ -1,10 +1,10 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { InputField } from "../component/ui/InputField";
 import { enqueueSnackbar } from "notistack";
 import { useDebounce } from "@/utils/debounce";
 import { getFont } from "@/utils/style";
 import { FontType } from "@/constants/common";
+import { useNavigate } from "react-router-dom";
 
 type FormData = {
   email: string;
@@ -12,22 +12,37 @@ type FormData = {
 };
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    trigger,
+    formState: { errors, isSubmitted },
     reset,
   } = useForm<FormData>();
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     console.log("Form submitted with:", data);
 
-    // You can add your login API call here
+    const fieldsToValidate: (keyof FormData)[] = ["email", "password"];
+    // Validate all fields
+    const results = await Promise.all(
+      fieldsToValidate.map((field) => trigger(field))
+    );
 
+    // If any field is invalid, stop the submission
+    if (results.includes(false)) {
+      console.log("Validation failed.");
+      return;
+    }
+
+    // You can add your login API call here
     enqueueSnackbar("Login successful!", { variant: "success" });
 
     // Reset form after submit if needed
     reset();
+
+    navigate("/register", { replace: false });
   };
 
   return (
@@ -37,16 +52,16 @@ const LoginPage: React.FC = () => {
           Log in
         </h2>
 
-        <form onSubmit={useDebounce(handleSubmit(onSubmit), 500)}>
-          {/* Email Input */}
+        <form onSubmit={handleSubmit((data) => console.log(data))}>
+          {/* Email */}
           <div className="mb-4">
             <InputField
               type="email"
               placeholder="Email address"
               isSecureField={false}
               showClearIcon={false}
-              hasError={!!errors.email}
-              showError={!!errors.email}
+              hasError={errors.email && isSubmitted}
+              showError={errors.email && isSubmitted}
               errorMessage={errors.email?.message}
               {...register("email", {
                 required: { value: true, message: "Email is required" },
@@ -61,15 +76,15 @@ const LoginPage: React.FC = () => {
             />
           </div>
 
-          {/* Password Input */}
+          {/* Password */}
           <div className="mb-4">
             <InputField
               type="password"
               placeholder="Password"
               isSecureField={true}
               showClearIcon={false}
-              hasError={!!errors.password}
-              showError={!!errors.password}
+              hasError={errors.password && isSubmitted}
+              showError={errors.password && isSubmitted}
               errorMessage={errors.password?.message}
               {...register("password", {
                 required: { value: true, message: "Password is required" },
@@ -86,7 +101,7 @@ const LoginPage: React.FC = () => {
 
           {/* Submit Button */}
           <button
-            type="submit"
+            onSubmit={useDebounce(handleSubmit(onSubmit), 500)}
             className={`w-full rounded-md bg-blue-500 py-3 text-white hover:bg-blue-600 transition ${getFont(
               FontType.bold
             )}`}
@@ -103,12 +118,15 @@ const LoginPage: React.FC = () => {
         >
           or,{" "}
           <button
-            onClick={() => console.log("Sign up clicked")}
+            type="button"
+            onClick={async () => {
+              navigate("/register", { replace: false });
+            }}
             className={`font-medium text-blue-500 hover:underline bg-transparent border-none cursor-pointer ${getFont(
               FontType.bold
             )}`}
           >
-            sign up
+            Register
           </button>
         </div>
       </div>
